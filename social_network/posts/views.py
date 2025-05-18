@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.decorators import action
@@ -38,5 +38,5 @@ class CommentViewSet(ModelViewSet):
         return super().get_queryset()
 
     def perform_create(self, serializer):
-        post = Post.objects.get(pk=self.kwargs['post_pk'])
+        post = get_object_or_404(Post, pk=self.kwargs['post_pk'])
         serializer.save(author=self.request.user, post=post)
